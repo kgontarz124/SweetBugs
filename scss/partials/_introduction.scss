@@ -1,0 +1,107 @@
+.introduction {
+    height: 100%;
+    position: relative;
+
+    img {
+        position: absolute;
+        right: -70px;
+        top: -80px;
+    }
+
+    .main-logo {
+        a,img {
+            display: block;
+            position: absolute;
+            z-index: 1;
+            max-width: 430px;
+            width: 100%;
+            height: 200px;
+            top:0;
+            left: 0;
+        }
+    }
+
+    .main-nav {
+        position: absolute;
+        z-index: 1;
+        top: 220px;
+        width: 430px;
+
+        ul {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .nav-start {
+                width: 180px;
+            }
+            .nav-cont {
+                width: 284px;
+            }
+            .nav-rules {
+                width: 344px;
+            }
+            .nav-score {
+                width: 334px;
+            }
+            .nav-set {
+                width: 230px;
+            }
+            li {
+                background: $colorQuaternary;
+                box-shadow: 2px 2px 13px 3px rgba(0,0,0,0.65);
+                border-radius: 2px;
+                margin-bottom: 20px;
+                text-align: center;
+                height: 55px;
+
+                &:last-of-type {
+                    margin-bottom: 0;
+                }
+
+                &:hover {
+                    transform: scale(1.1);
+                }
+
+                a {
+                    text-decoration: none;
+                    color: $colorTertiary;
+                    display: inline-block;
+                    width: 100%;
+                    height: 100%;
+                    font-weight: 700;
+                    font-size: $fontSize1;
+                    line-height: 66px;
+                }
+            }
+        }
+    }
+}
+
+
+@media (max-width:700px) {
+    .introduction {
+        height: 100%;
+        position: static;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .magnifier-box {
+            display: none;
+        }
+
+        .main-logo img, .main-logo a, .main-nav {
+            position: static;
+        }
+    }
+}
+
+
+@media (max-width:440px) {
+    .introduction {
+        .main-logo img, .main-logo a {
+            padding: 0 5px;
+        }
+    }
+}

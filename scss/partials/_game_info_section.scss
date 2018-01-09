@@ -1,0 +1,109 @@
+.game-info-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+
+    .jar-section {
+        .row {
+            .col-8-24 {
+                &:first-of-type {
+                    display: flex;
+                    justify-content: flex-end;
+                }
+                &:nth-of-type(2n) {
+                    display: flex;
+                    justify-content: center;
+                }
+            }
+            .col-12-24 {
+                &:first-of-type {
+                    padding-left: 70px;
+                }
+                &:last-of-type {
+                    padding-right: 55px;
+                }
+            }
+        }
+    }
+}
+
+.jar-box {
+    position: relative;
+
+    [class*="-bug-icon"] {
+        position: absolute;
+    }
+
+    .purple-bug-icon {
+        top: 25px;
+        left: 11px;
+    }
+    .pink-bug-icon {
+        top: 26px;
+        left: 15px;
+    }
+    .green-bug-icon {
+        top: 27px;
+        left: 10px;
+    }
+    .orange-bug-icon {
+        top: 27px;
+        left: 11px;
+    }
+    .red-bug-icon {
+        top: 30px;
+        left: 11px;
+    }
+}
+
+.jar-section .result-jar-box-1 {
+    background: url("../images/plank-jar-1.png");
+    margin-bottom: 20px;
+    ul {
+        justify-content: space-around;
+        li {
+            display: inline-block;
+            padding-top: 2px;
+            &:first-of-type {
+                padding-left: 16px;
+            }
+            &:last-of-type {
+                padding-right: 10px;
+            }
+        }
+    }
+}
+.jar-section .result-jar-box-2 {
+    background: url("../images/plank-jar-2.png");
+    ul {
+        justify-content: center;
+        li {
+            display: inline-block;
+            padding-top: 0;
+            &:first-of-type {
+                padding-right: 65px;
+            }
+        }
+    }
+}
+
+.jar-section .result-jar-box-1,
+.jar-section .result-jar-box-2 {
+    width: 345px;
+    height: 35px;
+}
+
+@media (max-width:900px) {
+    .row {
+        .col-16-24 {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .col-8-24 {
+            display: none;
+        }
+    }
+}

@@ -1,0 +1,39 @@
+@import "partials/_reset.scss";
+@import "_grid.scss";
+@import "modules/_colors.scss";
+@import "modules/_fonts.scss";
+@import "modules/_bugs_icons.scss";
+@import "_global_classes.scss";
+@import "partials/_header.scss";
+@import "partials/_introduction.scss";
+@import "partials/_game_section.scss";
+@import "partials/_game_info_section.scss";
+
+
+
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    text-transform: uppercase;
+
+    font-size: $fontSize0;
+    font-family: 'Hind', sans-serif;
+    background-image:
+         -moz-linear-gradient(45deg, $colorPrimary 25%, transparent 25%),
+         -moz-linear-gradient(-45deg, $colorPrimary 25%, transparent 25%),
+         -moz-linear-gradient(45deg, transparent 75%, $colorPrimary 75%),
+         -moz-linear-gradient(-45deg, $colorSecondary 75%, $colorPrimary 75%);
+       background-image:
+         -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.25, $colorPrimary), color-stop(.25, transparent)),
+         -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, $colorPrimary), color-stop(.25, transparent)),
+         -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.75, transparent), color-stop(.75, $colorPrimary)),
+         -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.75, $colorSecondary), color-stop(.75, $colorPrimary));
+
+        -moz-background-size:25px 25px;
+        background-size:25px 25px;
+        -webkit-background-size:25px 25px;
+
+        background-position:-3px 15px, 10px -10px, 60px -72px, -3px 53px;
+}

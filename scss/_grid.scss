@@ -1,0 +1,32 @@
+* {
+    box-sizing: border-box;
+}
+
+@mixin clearfix() {
+    &:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+}
+
+//==========================================
+//GRID
+//==========================================
+$column : 24;
+
+.row {
+    @include clearfix();
+
+
+    [class*="col-"] {
+        float: left;
+        margin-bottom: 0;
+    }
+
+    @for $i from 1 through $column {
+        .col-#{$i}-#{$column} {
+            width: ((100 / $column) * $i) * 1%;
+        }
+    }
+}

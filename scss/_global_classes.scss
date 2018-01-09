@@ -1,0 +1,29 @@
+.container {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 950px;
+}
+
+.align-center {
+    display: flex;
+    align-items: center;
+}
+
+.results-numbers {
+    font-weight: 700;
+    color: $colorTertiary;
+    text-transform: lowercase;
+}
+
+.result-title {
+    color: $colorTertiary;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.unactive {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.7s ease-out;
+}
