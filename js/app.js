@@ -2,121 +2,143 @@ const allColors = ["purple", "pink", "green", "red", "orange"];
 let tab = [];
 let id = 0;
 
-function Bug(id) {
-    this.id = id;
-    this.x = 4;
-    this.y = -1;
-    this.direction = "down";
-    this.color = allColors[Math.floor(Math.random() * 5)];
+
+class Bug {
+	constructor() {
+        this.x = 4;
+        this.y = -1;
+        this.up = -2;
+        this.down = 0;
+        this.left = 3;
+        this.right = 5;
+        this.direction = "down";
+        this.color = allColors[Math.floor(Math.random() * 5)];
+	}
 }
+class Game {
+	constructor() {
+        this.width = 8;
+        this.height = 7;
+        this.board = document.querySelectorAll(".square");
+        this.bug = new Bug(id);
+        this.score = 0;
+        this.nextCheck = 0;
 
-function Game(id) {
-    this.width = 8;
-    this.height = 7;
-    this.board = document.querySelectorAll(".square");
-    this.bug = new Bug(id);
-    this.score = 0;
+        // start game
+        self = this;
+        this.handler = setInterval(this.tick, 700);
+        document.addEventListener("keydown", this.keyboard);
+	}
 
-    // start game
-    self = this;
-    this.handler = setInterval(this.tick, 250);
-    document.addEventListener("keydown", this.keyboard);
-}
+    keyboard(event) {
+        var key = event.which;
+        switch (key) {
+            case 37:
+                self.bug.direction = "left";
+                break;
+            case 39:
+                self.bug.direction = "right";
+                break;
+            case 40:
+                self.bug.direction = "down";
+                break;
+        }
+    }
 
+    check() {
+    // checking borders - left and right
+        if (this.bug.x <=0 && this.bug.direction === "right") {
+            this.bug.direction = "right";
 
-Game.prototype.position = function(x, y) {
-    return y + x * this.height;
+        } else if (this.bug.x <=0 ) {
+                this.bug.direction = "down";
+        }
+        if (this.bug.x >=7 && this.bug.direction === "left") {
+            this.bug.direction = "left";
 
-}
-Game.prototype.occupy = function(x, y) {
-    let bugField = this.position(this.bug.x, this.bug.y);
-    this.board[bugField].dataset.occupied = "true";
-}
-Game.prototype.clean = function(a,b,c) {
+        } else if (this.bug.x >=7 ) {
+                this.bug.direction = "down";
+        }
+    }
 
+    position(x, y) {
+        return y + x * this.height;
+    }
+
+    clean(a) {
         this.board[a].classList.remove(this.bug.color);
-        this.board[b].classList.remove(this.bug.color);
-        this.board[c].classList.remove(this.bug.color);
-}
+    }
 
-Game.prototype.render = function() {
-    //tu jest cos nie tak
-    let y = self.bug.y;
-    let x = self.bug.x;
-    let upBugField = self.position(x, y-1);
-    let leftBugField = self.position(x+1, y);
-    let rightBugField = self.position(x-1, y);
-    self.clean(upBugField, leftBugField, rightBugField)
 
-    // rendering bug
-    let bugField = self.position(self.bug.x, self.bug.y);
-    self.board[bugField].classList.add(self.bug.color);
-    console.log(self.bug.y, self.bug.x, self.bug.color);
+    tick() {
+        self.check();
+        switch (self.bug.direction) {
+            case "down":
+                self.bug.y++;
+                self.bug.up++;
+                self.bug.down++;
+                let upBugField = self.position(self.bug.x, self.bug.up);
+                self.clean(upBugField);
+                break;
+            case "left":
+                self.bug.x--;
+                self.bug.left--;
+                self.bug.right--;
+                let rightBugField = self.position(self.bug.right, self.bug.y);
+                self.clean(rightBugField);
+                break;
+            case "right":
+                self.bug.x++;
+                self.bug.left++;
+                self.bug.rigth++;
+                let leftBugField = self.position(self.bug.left, self.bug.y);
+                self.clean(leftBugField);
+                break;
+        }
+        self.bug.direction = "down";
+        self.next();
+    }
 
-};
+    next(){
+        //chech downfield free or not
+        let downBugField = self.position(self.bug.x, self.bug.down);
+        let downOccupiedField = self.board[downBugField].dataset.occupied;
 
-Game.prototype.next = function() {
-    let y = self.bug.y;
-    let downBugField = self.position(self.bug.x, y+1); //i tu tez jest cos nie tak
-    let occupiedField = self.board[downBugField].dataset.occupied;
-    if (self.bug.y > 6  || occupiedField === "true") {
-        console.log(self.bug.y, "stopinterval");
-        clearInterval(self.handler);
-        tab.push(self.bug)
-        console.log(tab);
-        self.occupy();
-        id++;
-        let game = new Game(id);
+        if (self.bug.y > 5) {
+            console.log(self.bug.y, "stopinterval");
+            clearInterval(self.handler);
+            tab.push(self.bug)
+            console.log(tab);
+            self.occupy();
+            self.render();
+            let game = new Game();
+        } else if (downOccupiedField === "true"){
+            console.log(self.bug.y, "stopinterval");
+            clearInterval(self.handler);
+            tab.push(self.bug)
+            console.log(tab);
+            self.occupy();
+            self.render();
+            let game = new Game();
+        } else {
+            self.render();
+        }
+    }
 
-    } else {
-        self.render();
+    occupy(x, y) {
+        //occupy field
+        let bugField = this.position(this.bug.x, this.bug.y);
+        this.board[bugField].dataset.occupied = "true";
+    }
+
+    render() {
+        // rendering bug
+        let bugField = self.position(self.bug.x, self.bug.y);
+        self.board[bugField].classList.add(self.bug.color);
+        console.log(self.bug.x, self.bug.y, self.bug.color);
     }
 }
 
-
-Game.prototype.tick = function() {
-    self.check();
-    switch (self.bug.direction) {
-        case "down":
-            self.bug.y++;
-            break;
-        case "left":
-            self.bug.x--;
-            break;
-        case "right":
-            self.bug.x++;
-            break;
-    }
-    self.bug.direction = "down";
-
-    self.next();
-
-};
-
-
-Game.prototype.keyboard = function(event) {
-    var key = event.which;
-    switch (key) {
-        case 37:
-            self.bug.direction = "left";
-            break;
-        case 39:
-            self.bug.direction = "right";
-            break;
-        case 40:
-            self.bug.direction = "down";
-            break;
-    }
-};
-
-
-Game.prototype.check = function() {
-
-// checking borders - left and right
-if (this.bug.x <=0 || this.bug.x >= 7) {
-    this.bug.direction = "down";
-}
-};
 
 document.addEventListener("DOMContentLoaded", function(event) {
     "use strict";
