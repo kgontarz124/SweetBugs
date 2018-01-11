@@ -1,16 +1,13 @@
 const allColors = ["purple", "pink", "green", "red", "orange"];
-let tab = [];
-let id = 0;
-
 
 class Bug {
 	constructor() {
         this.x = 4;
         this.y = -1;
-        this.up = -2;
-        this.down = 0;
-        this.left = 3;
-        this.right = 5;
+        this.up = this.y - 1;
+        this.down = this.y + 1;
+        this.left = this.x - 1;
+        this.right = this.x + 1;
         this.direction = "down";
         this.color = allColors[Math.floor(Math.random() * 5)];
 	}
@@ -20,9 +17,8 @@ class Game {
         this.width = 8;
         this.height = 7;
         this.board = document.querySelectorAll(".square");
-        this.bug = new Bug(id);
+        this.bug = new Bug();
         this.score = 0;
-        this.nextCheck = 0;
 
         // start game
         self = this;
@@ -90,7 +86,7 @@ class Game {
             case "right":
                 self.bug.x++;
                 self.bug.left++;
-                self.bug.rigth++;
+                self.bug.right++;
                 let leftBugField = self.position(self.bug.left, self.bug.y);
                 self.clean(leftBugField);
                 break;
@@ -100,29 +96,31 @@ class Game {
     }
 
     next(){
-        //chech downfield free or not
-        let downBugField = self.position(self.bug.x, self.bug.down);
-        let downOccupiedField = self.board[downBugField].dataset.occupied;
+        //check downField free or not
+        let downOccupiedField;
+        if (self.bug.x === 7, self.bug.y === 6) {
+            downOccupiedField === "true"
+        } else {
+            let downBugField = self.position(self.bug.x, self.bug.down);
+            downOccupiedField = self.board[downBugField].dataset.occupied;
+        }
 
-        if (self.bug.y > 5) {
-            console.log(self.bug.y, "stopinterval");
-            clearInterval(self.handler);
-            tab.push(self.bug)
-            console.log(tab);
-            self.occupy();
-            self.render();
-            let game = new Game();
+
+        if (self.bug.y >= 6) {
+            this.stopBug();
         } else if (downOccupiedField === "true"){
-            console.log(self.bug.y, "stopinterval");
-            clearInterval(self.handler);
-            tab.push(self.bug)
-            console.log(tab);
-            self.occupy();
-            self.render();
-            let game = new Game();
+            this.stopBug();
         } else {
             self.render();
         }
+    }
+
+    stopBug() {
+        console.log(self.bug.y, "stopinterval");
+        clearInterval(self.handler);
+        self.occupy();
+        self.render();
+        let game = new Game();
     }
 
     occupy(x, y) {
@@ -163,7 +161,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
     //game
-
     let game = new Game();
 
 });
