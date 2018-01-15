@@ -112,7 +112,7 @@ class Game {
     }
 
     position(x, y) {
-        return self.board[y + x * this.height;
+        return self.board[y + x * this.height];
     }
 
 	addPointsForBugColor(prop, color, tab){
@@ -512,18 +512,18 @@ class Game {
 			switch (self.bug.direction) {
 				case "down":
 					self.bug.y++;
-					let upPosition = self.position(self.bug.x, self.bug.y - 1);
-					self.clean(upPosition);
+					let upElem = self.position(self.bug.x, self.bug.y - 1);
+					self.clean(upElem);
 					break;
 				case "left":
 					self.bug.x--;
-					let rightPosition = self.position(self.bug.x + 1, self.bug.y);
-					self.clean(rightPosition);
+					let rightElem = self.position(self.bug.x + 1, self.bug.y);
+					self.clean(rightElem);
 					break;
 				case "right":
 					self.bug.x++;
-					let leftPosition = self.position(self.bug.x - 1, self.bug.y);
-					self.clean(leftPosition);
+					let leftElem = self.position(self.bug.x - 1, self.bug.y);
+					self.clean(leftElem);
 					break;
 			}
 			self.bug.direction = "down";
