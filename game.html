@@ -15,27 +15,27 @@
             <div class="container">
                 <div class="results-info">
                     <ul class="align-center">
-                        <li class="result-title">point : <span class="results-numbers"> 24</span></li>
-                        <li class="result-title">time : <span class="results-numbers"></span></li>
-                        <li class="result-title">rank : </span>
-                                <img class="star-icon" data-num="0" src="images/star.svg" alt="Rank star" width="32px" height="32px">
-                                <img class="star-icon" data-num="1" src="images/star.svg" alt="Rank star" width="32px" height="32px">
-                                <img class="star-icon" data-num="2" src="images/star.svg" alt="Rank star" width="32px" height="32px">
-                                <img class="star-icon" data-num="3" src="images/star.svg" alt="Rank star" width="32px" height="32px">
-                                <img class="star-icon" data-num="4" src="images/star.svg" alt="Rank star" width="32px" height="32px">
+                        <li class="result-title">point : <span class="results-numbers general">0</span></li>
+                        <li class="result-title">time : <span class="results-numbers time">00.00</span></li>
+                        <li class="result-title">speed : </span>
+                                <img class="star-icon" data-num="0" data-speed="600" src="images/blue-star.svg" alt="Rank star" width="32px" height="32px">
+                                <img class="star-icon" data-num="1" data-speed="500" src="images/star.svg" alt="Rank star" width="32px" height="32px">
+                                <img class="star-icon" data-num="2" data-speed="400" src="images/star.svg" alt="Rank star" width="32px" height="32px">
+                                <img class="star-icon" data-num="3" data-speed="300" src="images/star.svg" alt="Rank star" width="32px" height="32px">
+                                <img class="star-icon" data-num="4" data-speed="200" src="images/star.svg" alt="Rank star" width="32px" height="32px">
                         </li>
                     </ul>
                 </div>
                 <aside>
-                    <div class="additional-btns">
+                    <div class="additional-btn">
+                        <div class="play btn">
+                            <i class="icon-play"></i>
+                        </div>
                         <div class="pause btn">
                             <i class="icon-pause"></i>
                         </div>
                         <div class="volume btn">
                             <i class="icon-volume-up"></i>
-                        </div>
-                        <div class="cancel btn">
-                            <i class="icon-cancel"></i>
                         </div>
                     </div>
                 </aside>
@@ -50,6 +50,18 @@
                     <div class="row">
                         <div class="col-16-24">
                             <div class="game-field">
+                                <div class="gameover-info">
+                                    game over !!!<br>
+                                    result of your game :
+                                    <span class="result-of-game" style="font-weight:600;"></span><br>
+                                    your time :
+                                    <span class="time-of-game" style="font-weight:600;"></span>
+                                    <div class="additional-btn">
+                                        <div class="cancel-game-over btn">
+                                            <i class="icon-cancel"></i>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-3-24">
                                         <div class="square" data-occupied="false"></div>
@@ -176,9 +188,9 @@
                                         </div>
                                         <div class="result-jar-box-1">
                                             <ul class="align-center">
-                                                <li class="result-title"><span class="results-numbers"> x 0</span></li>
-                                                <li class="result-title"><span class="results-numbers"> x 0</span></li>
-                                                <li class="result-title"><span class="results-numbers"> x 0</span></li>
+                                                <li class="result-title">x <span class="results-numbers purple-result">0</span></li>
+                                                <li class="result-title">x <span class="results-numbers  pink-result">0</span></li>
+                                                <li class="result-title">x<span class="results-numbers green-result">0</span></li>
                                             </ul>
                                         </div>
 
@@ -198,8 +210,8 @@
                                         </div>
                                         <div class="result-jar-box-2">
                                             <ul class="align-center">
-                                                <li class="result-title"><span class="results-numbers"> x 0</span></li>
-                                                <li class="result-title"><span class="results-numbers"> x 0</span></li>
+                                                <li class="result-title">x<span class="results-numbers orange-result">0</span></li>
+                                                <li class="result-title">x<span class="results-numbers red-result">0</span></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -207,7 +219,6 @@
                             </section>
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>

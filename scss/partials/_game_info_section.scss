@@ -63,6 +63,7 @@
     ul {
         justify-content: space-around;
         li {
+            text-transform: lowercase;
             display: inline-block;
             padding-top: 2px;
             &:first-of-type {
@@ -79,6 +80,7 @@
     ul {
         justify-content: center;
         li {
+            text-transform: lowercase;
             display: inline-block;
             padding-top: 0;
             &:first-of-type {

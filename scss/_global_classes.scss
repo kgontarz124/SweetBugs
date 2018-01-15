@@ -13,6 +13,7 @@
     font-weight: 700;
     color: $colorTertiary;
     text-transform: lowercase;
+    margin-left: 5px;
 }
 
 .result-title {
@@ -26,4 +27,26 @@
     opacity: 0;
     visibility: hidden;
     transition: all 0.7s ease-out;
+}
+
+.additional-btn {
+    position: absolute;
+    right: 0;
+    top: 22px;
+
+    .btn {
+        width: 50px;
+        height: 50px;
+        display: inline-block;
+        border-radius: 50%;
+        background: $colorQuinary;
+        text-align: center;
+        cursor: pointer;
+
+        &:hover {
+            [class*="icon-"]:before{
+                transform: scale(1.1);
+            }
+        }
+    }
 }
