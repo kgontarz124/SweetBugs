@@ -19,7 +19,7 @@ class Game {
 		this.bug = new Bug();
 		this.speed = speed;
 		this.endOfGame = false;
-		this.playTurnOn = true;
+		this.playTurnOn = false;
 		this.soundTurnOn = sound;
         this.board = document.querySelectorAll(".square");
         this.generalResult = Number(document.querySelector(".general").innerText);
