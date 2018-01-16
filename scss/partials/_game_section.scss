@@ -14,8 +14,6 @@
             position: absolute;
             top: 142px;
             text-align: center;
-            color: $colorTertiary;
-            font-weight: 600;
             padding: 18px 0;
             border: 2px solid $colorSenary;
             display: none;
@@ -71,9 +69,47 @@
         display: flex;
         justify-content: space-around;
         li {
+            position: relative;
+            &:hover{
+                .prompt {
+                    opacity: 1;
+                    visibility: 1;
+                }
+            }
             img {
-                margin-right: 20px;
-                margin-bottom: 7px;
+                position: absolute;
+                z-index: 10px;
+            }
+            .cleaner-icon {
+                bottom: 0;
+            }
+            .sprey-icon {
+                bottom: -5px;
+            }
+            .boom-icon {
+                bottom: -3px;
+            }
+            .results-numbers {
+                padding-left: 54px;
+            }
+
+            .prompt {
+                position: absolute;
+                left: 60px;
+                top: 10px;
+                z-index: 1;
+                font-size: $fontSize3;
+                line-height: 20px;
+                background: $colorQuinary;
+                text-transform: lowercase;
+                width: 120px;
+                height: 40px;
+                text-align: center;
+                border-radius: 2px;
+                border: 1px solid $colorTertiary;
+                opacity: 0;
+                visibility: 0;
+                transition: 0.5s all;
             }
         }
 

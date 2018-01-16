@@ -1,5 +1,6 @@
 const allColors = ["purple", "pink", "green", "red", "orange"];
 const starsTab = document.querySelectorAll(".star-icon");
+const helpers = ["sprey", "boom", "cleaner"];
 
 class Bug {
 	constructor() {
@@ -7,17 +8,19 @@ class Bug {
         this.y = 0;
         this.direction = "down";
         this.color = allColors[Math.floor(Math.random() * 5)];
+		this.trueColor="";
 	}
 }
 
 class Game {
-	constructor(speed) {
+	constructor(speed, sound) {
         this.width = 8;
         this.height = 7;
 		this.bug = new Bug();
 		this.speed = speed;
 		this.endOfGame = false;
-		this.turn0n = true;
+		this.playTurnOn = true;
+		this.soundTurnOn = sound;
         this.board = document.querySelectorAll(".square");
         this.generalResult = Number(document.querySelector(".general").innerText);
 		this.purple = Number(document.querySelector(".purple-result").innerText);
@@ -38,8 +41,12 @@ class Game {
         document.addEventListener("keydown", this.keyboard);
 		document.querySelector(".pause").addEventListener("click", (e)=>{
 			clearInterval(self.handler);
-			self.turn0n = false;
+			clearInterval(self.timer);
+			self.playTurnOn = false;
 		});
+		document.querySelector(".volume").addEventListener("click", (e)=>{
+			self.soundTurnOn=!self.soundTurnOn;
+		})
 	}
 
 	countGameTime() {
@@ -60,6 +67,14 @@ class Game {
 	}
 
     keyboard(event) {
+		let checkCanUseHelper = (points, num) =>{
+			if(self.generalResult>=points){
+				self.bug.trueColor = self.bug.color;
+				self.bug.color = helpers[num];
+				self.generalResult -= points;
+				document.querySelector(".general").innerText = self.generalResult;
+			}
+		}
         var key = event.which;
         switch (key) {
             case 37:
@@ -71,12 +86,27 @@ class Game {
             case 40:
                 self.bug.direction = "down";
                 break;
+			case 90:
+				checkCanUseHelper(100, 0);
+                break;
+            case 88:
+				checkCanUseHelper(150, 1);
+                break;
+            case 67:
+				checkCanUseHelper(200, 2);
+                break;
         }
     }
 
     check() {
 		let downPosition = self.position(self.bug.x, self.bug.y + 1);
+		//gemeover
 		if(self.bug.y === 0 && downPosition.dataset.occupied === "true"){
+			if(self.soundTurnOn){
+				let	soundBox = document.querySelector(".sound-box");
+				soundBox.innerHTML =`<audio autoplay><source src="fail-sound.mp3"/>
+				<source src="fail-sound.mp3"/></audio>`;
+			}
 			clearInterval(self.handler);
 			document.querySelector(".result-of-game").innerText = self.generalResult;
 			document.querySelector(".time-of-game").innerText = document.querySelector(".time").innerText
@@ -86,6 +116,13 @@ class Game {
 			clearInterval(self.timer);
 			document.querySelector(".time").innerText = "00.00";
 			document.querySelector(".general").innerText = "0";
+
+			let tabPropColor = [self.purple, self.pink, self.green, self.red,  self.orange];
+
+			for(let i= 0; i<tabPropColor.length; i++){
+				tabPropColor[i] = 0;
+				document.querySelector("." +allColors[i]+"-result").innerText = tabPropColor[i];
+			}
 
 			document.querySelector(".cancel-game-over").addEventListener("click", (e)=>{
 				info.classList.remove("active");
@@ -115,12 +152,12 @@ class Game {
         return self.board[y + x * this.height];
     }
 
-	addPointsForBugColor(prop, color, tab){
-		prop += tab.length;
-		document.querySelector("." +color+"-result").innerText = prop;
-	}
-
 	cleanFields(tab){
+		let addPointsForBugColor = (prop, color, tab)=>{
+			prop += tab.length;
+			document.querySelector("." +color+"-result").innerText = prop;
+		}
+
 		let colorsTrue = [];
 		for(let i=0; i<tab.length; i++){
 			if(tab[i].className.indexOf(self.bug.color) !== -1) {
@@ -136,19 +173,19 @@ class Game {
 
 			switch (self.bug.color) {
 				case "purple":
-					self.addPointsForBugColor(self.purple, self.bug.color, colorsTrue);
+					addPointsForBugColor(self.purple, self.bug.color, colorsTrue);
 					break;
 				case "pink":
-					self.addPointsForBugColor(self.pink, self.bug.color, colorsTrue);
+					addPointsForBugColor(self.pink, self.bug.color, colorsTrue);
 					break;
 				case "green":
-					self.addPointsForBugColor(self.green, self.bug.color, colorsTrue);
+					addPointsForBugColor(self.green, self.bug.color, colorsTrue);
 					break;
 				case "orange":
-					self.addPointsForBugColor(self.orange, self.bug.color, colorsTrue);
+					addPointsForBugColor(self.orange, self.bug.color, colorsTrue);
 					break;
 				case "red":
-					self.addPointsForBugColor(self.red, self.bug.color, colorsTrue);
+					addPointsForBugColor(self.red, self.bug.color, colorsTrue);
 					break;
 			}
 
@@ -188,6 +225,82 @@ class Game {
 		let case1 = [rightElem, leftElem];
 		let case6 = [rightElem, leftElem];
 		let def = [rightElem, leftElem];
+
+		function tamp6(caseNum, leftBro, rightBro){
+			let booleanOneR = self.elementHasColor(rightElem);
+			let booleanOneL = self.elementHasColor(leftElem);
+
+			if(booleanOneR && booleanOneL){
+				caseNum.push(upRightElem, upLeftElem, leftBro, rightBro);
+				self.cleanFields(caseNum);
+			} else if(booleanOneL){
+				caseNum.push(upLeftElem, leftBro);
+				self.cleanFields(caseNum);
+			} else if(booleanOneR){
+				caseNum.push(upRightElem, rightBro);
+				self.cleanFields(caseNum);
+			}
+		}
+
+		function temp5(caseNum, leftBro, rightBro){
+			let booleanOneR = self.elementHasColor(rightElem);
+			let booleanOneL = self.elementHasColor(leftElem);
+			let booleanOneD = self.elementHasColor(downElem);
+
+			if(booleanOneR && booleanOneL && booleanOneD){
+				caseNum.push(upRightElem, upLeftElem, downElem, leftBro, rightBro);
+				self.cleanFields(caseNum);
+			} else if(booleanOneR && booleanOneL){
+				caseNum.push(upRightElem, upLeftElem, downLeftElem, downRightElem, leftBro, rightBro);
+				self.cleanFields(caseNum);
+			} else if(booleanOneL){
+				caseNum.push(upLeftElem, downLeftElem, leftBro);
+				self.cleanFields(caseNum);
+			} else if(booleanOneL && booleanOneD){
+				caseNum.push(downElem, upLeftElem, downRightElem, downLeftElem, leftBro);
+				self.cleanFields(caseNum);
+			} else if(booleanOneR && booleanOneD){
+				caseNum.push(downElem, upRightElem, downLeftElem, downRightElem, rightBro);
+				self.cleanFields(caseNum);
+			} else if(booleanOneR){
+				caseNum.push(upRightElem, downRightElem, rightBro);
+				self.cleanFields(caseNum);
+			} else if(booleanOneD){
+				caseNum.push(downElem, downLeftElem, downRightElem);
+				self.cleanFields(caseNum);
+			}
+		}
+
+
+		function tempDef(caseNum, leftBro, rightBro, downBro){
+			let booleanOneR = self.elementHasColor(rightElem);
+			let booleanOneL = self.elementHasColor(leftElem);
+			let booleanOneD = self.elementHasColor(downElem);
+
+			if(booleanOneR && booleanOneL && booleanOneD){
+				caseNum.push(upRightElem, upLeftElem, downElem, leftBro, rightBro, downBro);
+				self.cleanFields(caseNum);
+			} else if(booleanOneR && booleanOneL){
+				caseNum.push(upRightElem, upLeftElem, downLeftElem, downRightElem, leftBro, rightBro);
+				self.cleanFields(caseNum);
+			} else if(booleanOneL){
+				caseNum.push(upLeftElem, downLeftElem, leftBro);
+				self.cleanFields(caseNum);
+			} else if(booleanOneL && booleanOneD){
+				caseNum.push(downElem, upLeftElem, downRightElem, downLeftElem, leftBro, downBro);
+				self.cleanFields(caseNum);
+			} else if(booleanOneR && booleanOneD){
+				caseNum.push(downElem, upRightElem, downLeftElem, downRightElem, rightBro);
+				self.cleanFields(caseNum);
+			} else if(booleanOneR){
+				caseNum.push(upRightElem, downRightElem, rightBro);
+				self.cleanFields(caseNum);
+			} else if(booleanOneD){
+				caseNum.push(downElem, downLeftElem, downRightElem, downBro);
+				self.cleanFields(caseNum);
+			}
+		}
+
 		switch(this.bug.y){
 			case 6:
 				switch(this.bug.x){
@@ -198,39 +311,12 @@ class Game {
 							self.cleanFields(case0);
 						}
 						break;
-
 					case 1:
-						let booleanOneR = self.elementHasColor(rightElem);
-						let booleanOneL = self.elementHasColor(leftElem);
-
-						if(booleanOneR && booleanOneL){
-							case1.push(rightElemBro, upRightElem, upLeftElem);
-							self.cleanFields(case1);
-						} else if(booleanOneL){
-							case1.push(upLeftElem);
-							self.cleanFields(case1);
-						} else if(booleanOneR){
-							case1.push(rightElemBro, upRightElem);
-							self.cleanFields(case1);
-						}
+						tamp6(case1, null, rightElemBro);
 						break;
-
 					case 6:
-						let booleanSixR = self.elementHasColor(rightElem);
-						let booleanSixL = self.elementHasColor(leftElem);
-
-						if(booleanSixR && booleanSixL){
-							case6.push(leftElemBro, upRightElem, upLeftElem);
-							self.cleanFields(case6);
-						} else if(booleanSixL){
-							case6.push(upLeftElem, leftElemBro);
-							self.cleanFields(case6);
-						} else if(booleanSixR){
-							case6.push(upRightElem);
-							self.cleanFields(case6);
-						}
+						tamp6(case6, leftElemBro);
 						break;
-
 					case 7:
 						let booleanSeven = self.elementHasColor(leftElem);
 						if(booleanSeven){
@@ -238,22 +324,8 @@ class Game {
 							self.cleanFields(case7);
 						}
 						break;
-
 					default:
-						let booleanDefR = self.elementHasColor(rightElem);
-						let booleanDefL = self.elementHasColor(leftElem);
-
-
-						if(booleanDefR && booleanDefL){
-							def.push(leftElemBro, rightElemBro, upRightElem, upLeftElem);
-							self.cleanFields(def);
-						} else if(booleanDefL){
-							def.push(leftElemBro, upLeftElem);
-							self.cleanFields(def);
-						} else if(booleanDefR){
-							def.push(rightElemBro, upRightElem);
-							self.cleanFields(def);
-						}
+						tamp6(def, leftElemBro, rightElemBro);
 						break;
 				}
 			break;
@@ -273,65 +345,15 @@ class Game {
 							case0.push(downElem, downRightElem);
 							self.cleanFields(case0);
 						}
-					break;
+						break;
 
 					case 1:
-						let booleanOneR = self.elementHasColor(rightElem);
-						let booleanOneL = self.elementHasColor(leftElem);
-						let booleanOneD = self.elementHasColor(downElem);
-
-						if(booleanOneR && booleanOneL && booleanOneD){
-							case1.push(rightElemBro, upRightElem, upLeftElem, downElem);
-							self.cleanFields(case1);
-						} else if(booleanOneR && booleanOneL){
-							case1.push(rightElemBro, upRightElem, upLeftElem, downLeftElem, downRightElem);
-							self.cleanFields(case1);
-						} else if(booleanOneL){
-							case1.push(upLeftElem, downLeftElem);
-							self.cleanFields(case1);
-						} else if(booleanOneL && booleanOneD){
-							case1.push(downElem, upLeftElem, downRightElem, downLeftElem);
-							self.cleanFields(case1);
-						} else if(booleanOneR && booleanOneD){
-							case1.push(downElem, upRightElem, rightElemBro, downLeftElem, downRightElem);
-							self.cleanFields(case1);
-						} else if(booleanOneR){
-							case1.push(rightElemBro, upRightElem, downRightElem);
-							self.cleanFields(case1);
-						} else if(booleanOneD){
-							case1.push(downElem, downLeftElem, downRightElem);
-							self.cleanFields(case1);
-						}
-					break;
+						temp5(case1, null, rightElemBro);
+						break;
 
 					case 6:
-						let booleanSixR = self.elementHasColor(rightElem);
-						let booleanSixL = self.elementHasColor(leftElem);
-						let booleanSixD = self.elementHasColor(downElem);
-
-						if(booleanSixR && booleanSixL && booleanSixD){
-							case6.push(leftElemBro, upRightElem, upLeftElem, downElem);
-							self.cleanFields(case6);
-						} else if(booleanSixR && booleanSixL){
-							case6.push(leftElemBro, upRightElem, upLeftElem, downLeftElem, downRightElem);
-							self.cleanFields(case6);
-						} else if(booleanSixL && booleanSixD){
-							case6.push(downElem, upLeftElem, downRightElem, downLeftElem, leftElemBro);
-							self.cleanFields(case6);
-						} else if(booleanSixR && booleanSixD){
-							case6.push(downElem, upRightElem, downLeftElem, downRightElem);
-							self.cleanFields(case6);
-						} else if(booleanSixL){
-							case6.push(upLeftElem, downLeftElem, leftElemBro);
-							self.cleanFields(case6);
-						} else if(booleanSixR){
-							case6.push(upRightElem, downRightElem);
-							self.cleanFields(case6);
-						} else if(booleanSixD){
-							case6.push(downElem, downLeftElem, downRightElem);
-							self.cleanFields(case6);
-						}
-					break;
+						temp5(case6, leftElemBro, null);
+						break;
 
 					case 7:
 						let booleanSevenL = self.elementHasColor(leftElem);
@@ -346,36 +368,11 @@ class Game {
 							case7.push(downElem, downLeftElem);
 							self.cleanFields(case7);
 						}
-					break;
+							break;
 
 					default:
-						let booleanDefR = self.elementHasColor(rightElem);
-						let booleanDefL = self.elementHasColor(leftElem);
-						let booleanDefD = self.elementHasColor(downElem);
-
-						if(booleanDefR && booleanDefL && booleanDefD){
-							def.push(leftElemBro, rightElemBro, upRightElem, upLeftElem, downElem);
-							self.cleanFields(def);
-						} else if(booleanDefR && booleanDefL){
-							def.push(leftElemBro, rightElemBro, upRightElem, upLeftElem, downLeftElem, downRightElem);
-							self.cleanFields(def);
-						} else if(booleanDefL && booleanDefD){
-							def.push(downElem, upLeftElem, downRightElem, downLeftElem, leftElemBro);
-							self.cleanFields(def);
-						} else if(booleanDefR && booleanDefD){
-							def.push(downElem, upRightElem, downLeftElem, downRightElem, rightElemBro);
-							self.cleanFields(def);
-						} else if(booleanDefL){
-							def.push(upLeftElem, downLeftElem, leftElemBro);
-							self.cleanFields(def);
-						} else if(booleanDefR){
-							def.push(upRightElem, rightElemBro,  downRightElem);
-							self.cleanFields(def);
-						} else if(booleanDefD){
-							def.push(downElem, downLeftElem, downRightElem);
-							self.cleanFields(def);
-						}
-					break;
+						temp5(def, leftElemBro, rightElemBro);
+						break;
 				}
 			break;
 
@@ -394,65 +391,14 @@ class Game {
 						case0.push(downElem, downRightElem, downElemBro);
 						self.cleanFields(case0);
 					}
-				break;
+					break;
 
 				case 1:
-					let booleanOneR = self.elementHasColor(rightElem);
-					let booleanOneL = self.elementHasColor(leftElem);
-					let booleanOneD = self.elementHasColor(downElem);
-
-					if(booleanOneR && booleanOneL && booleanOneD){
-						case1.push(rightElemBro, upRightElem, upLeftElem, downElem, downElemBro);
-						self.cleanFields(case1);
-					} else if(booleanOneR && booleanOneL){
-						case1.push(rightElemBro, upRightElem, upLeftElem, downLeftElem, downRightElem);
-						self.cleanFields(case1);
-					} else if(booleanOneL && booleanOneD){
-						case1.push(downElem, upLeftElem, downRightElem, downLeftElem, downElemBro);
-						self.cleanFields(case1);
-					} else if(booleanOneR && booleanOneD){
-					   case1.push(downElem, upRightElem, rightElemBro, downLeftElem, downRightElem, downElemBro);
-					   self.cleanFields(case1);
-				    } else if(booleanOneL){
-						case1.push(upLeftElem, downLeftElem);
-						self.cleanFields(case1);
-					} else if(booleanOneR){
-						case1.push(rightElemBro, upRightElem, downRightElem);
-						self.cleanFields(case1);
-					} else if(booleanOneD){
-						case1.push(downElem, downLeftElem, downRightElem, downElemBro);
-						self.cleanFields(case1);
-					}
-				break;
-
+					tempDef(case1, null, rightElemBro, downElemBro);
+					break;
 				case 6:
-					let booleanSixR = self.elementHasColor(rightElem);
-					let booleanSixL = self.elementHasColor(leftElem);
-					let booleanSixD = self.elementHasColor(downElem);
-
-					if(booleanSixR && booleanSixL && booleanSixD){
-						case6.push(leftElemBro, upRightElem, upLeftElem, downElem, downElemBro);
-						self.cleanFields(case6);
-					} else if(booleanSixR && booleanSixL){
-						case6.push(leftElemBro, upRightElem, upLeftElem, downLeftElem, downRightElem);
-						self.cleanFields(case6);
-					} else if(booleanSixL && booleanSixD){
-						case6.push(downElem, upLeftElem, downRightElem, downLeftElem, leftElemBro, downElemBro);
-						self.cleanFields(case6);
-					} else if(booleanSixR && booleanSixD){
-						case6.push(downElem, upRightElem, downLeftElem, downRightElem, downElemBro);
-						self.cleanFields(case6);
-					} else if(booleanSixL){
-						case6.push(upLeftElem, downLeftElem, leftElemBro);
-						self.cleanFields(case6);
-					} else if(booleanSixR){
-						case6.push(upRightElem, downRightElem);
-						self.cleanFields(case6);
-					} else if(booleanSixD){
-						case6.push(downElem, downLeftElem, downRightElem, downElemBro);
-						self.cleanFields(case6);
-					}
-				break;
+					tempDef(case6, leftElemBro, null, downElemBro);
+					break;
 
 				case 7:
 					let booleanSevenL = self.elementHasColor(leftElem);
@@ -470,40 +416,18 @@ class Game {
 				break;
 
 				default:
-					let booleanDefR = self.elementHasColor(rightElem);
-					let booleanDefL = self.elementHasColor(leftElem);
-					let booleanDefD = self.elementHasColor(downElem);
-
-					if(booleanDefR && booleanDefL && booleanDefD){
-						def.push(leftElemBro, rightElemBro, upRightElem, upLeftElem, downElem, downElemBro);
-						self.cleanFields(def);
-					} else if(booleanDefR && booleanDefL){
-						def.push(leftElemBro, rightElemBro, upRightElem, upLeftElem, downLeftElem, downRightElem);
-						self.cleanFields(def);
-					} else if(booleanDefL && booleanDefD){
-						def.push(downElem, upLeftElem, downRightElem, downLeftElem, leftElemBro, downElemBro);
-						self.cleanFields(def);
-					} else if(booleanDefR && booleanDefD){
-						def.push(downElem, upRightElem, downLeftElem, downRightElem, rightElemBro, downElemBro);
-						self.cleanFields(def);
-					} else if(booleanDefL){
-						def.push(upLeftElem, downLeftElem, leftElemBro);
-						self.cleanFields(def);
-					} else if(booleanDefR){
-						def.push(upRightElem, rightElemBro,  downRightElem);
-						self.cleanFields(def);
-					} else if(booleanDefD){
-						def.push(downElem, downLeftElem, downRightElem, downElemBro);
-						self.cleanFields(def);
-					}
-				break;
+					tempDef(def, leftElemBro, rightElemBro, downElemBro);
+					break;
 			}
 			break;
 		}
 	}
 
 	clean(el) {
-        el.classList.remove(this.bug.color);
+        el.classList.remove(self.bug.color);
+		if(self.bug.trueColor!==""){
+			el.classList.remove(self.bug.trueColor);
+		}
     }
 
     tick() {
@@ -541,7 +465,6 @@ class Game {
             downOccupiedField = downPosition.dataset.occupied;
         }
 
-
         if (self.bug.y >= 6 || downOccupiedField === "true") {
 			self.render();
             self.stopBug();
@@ -550,11 +473,68 @@ class Game {
         }
     }
 
+	helpers(position){
+		let cleanFromBoom = (leng)=>{
+			for(let i = self.bug.x-1; i < self.bug.x+2; i++){
+				for(let j = self.bug.y+1; j < self.bug.y+leng; j++){
+					console.log(self.position(i, j));
+					self.position(i, j).dataset.occupied = "false";
+					let tab = self.position(i, j).classList;
+					tab.remove(tab[1]);
+					console.log("nowe: ");
+					console.log(self.position(i, j));
+				}
+			}
+		}
+
+		switch(self.bug.color){
+			case "sprey":
+				let downElemClass = self.position(self.bug.x, self.bug.y + 1).className.split(' ');
+				self.clean(position);
+				let tab = document.querySelectorAll("."+downElemClass[1]);
+				for (let i = 0; i < tab.length; i++) {
+					tab[i].classList.remove(downElemClass[1]);
+					self.occupy(tab[i]);
+				}
+				break;
+			case "boom":
+				self.clean(position);
+				switch(self.bug.y){
+					case 6:
+						cleanFromBoom(1);
+						break;
+					case 5:
+						cleanFromBoom(2);
+						break;
+					default:
+						cleanFromBoom(4);
+						break;
+				}
+				break;
+			case "cleaner":
+				self.clean(position);
+				for(let i = 0; i < 8; i++){
+					// console.log(self.position(i, self.bug.y + 1));
+					let tab = self.position(i, self.bug.y + 1).classList;
+					tab.remove(tab[1]);
+					self.position(i, self.bug.y + 1).dataset.occupied = "false";
+				}
+				break;
+		}
+	}
+
 
     stopBug() {
         clearInterval(self.handler);
-		self.occupy(self.position(self.bug.x, this.bug.y));
-		self.checkCloseFields();
+
+		// console.log(self.bug.trueColor);
+		if(self.bug.trueColor!==""){
+			self.helpers(self.position(self.bug.x, this.bug.y));
+			self.bug.trueColor = "";
+		} else {
+			self.occupy(self.position(self.bug.x, this.bug.y));
+			self.checkCloseFields();
+		}
 		self.bug = new Bug();
 		self.render();
 		self.handler = setInterval(self.tick, this.speed);
@@ -579,7 +559,8 @@ class Game {
 document.addEventListener("DOMContentLoaded", function(event) {
     "use strict";
 	//speed of speed
-	let speed = 700;
+	let speed = 600;
+	let sound = true;
 	function changespeed(event){
 		if (this.getAttribute("src") === "images/star.svg") {
 			for (let i=0; i<=Number(this.dataset.num); i++) {
@@ -598,15 +579,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		starsTab[i].addEventListener('click', changespeed);
 	}
 
+	//sound
+	document.querySelector(".volume").addEventListener("click", (e)=>{
+		sound=!sound;
+	})
+
 	//start game
 	document.querySelector(".play").addEventListener("click", (e)=>{
 		if(document.querySelector(".time").innerText === "00.00"){
-			let game = new Game(speed);
-		} else if(self.turn0n === false){
+			let game = new Game(speed, sound);
+		} else if(self.playTurnOn === false){
 			self.speed = speed;
 			self.handler = setInterval(self.tick, self.speed);
+			self.timer = setInterval(self.countGameTime, 1000);
+			self.playTurnOn = true;
 		}
 	});
-
 
 });

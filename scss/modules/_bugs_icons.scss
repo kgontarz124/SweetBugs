@@ -1,4 +1,4 @@
-.purple, .pink, .green, .red, .orange {
+.purple, .pink, .green, .red, .orange, .sprey, .boom, .cleaner {
     background-repeat: no-repeat !important;
     background-size: cover !important;
     width: 71px;
@@ -19,4 +19,17 @@
 }
 .orange {
     background-image: url('../images/orange-bug.png') !important;
+}
+.sprey {
+    background-image: url('../images/sprey.png') !important;
+    background-size: contain !important;
+    background-position: top 0px right 20px;
+}
+.boom {
+    background-image: url('../images/boom.png') !important;
+}
+.cleaner {
+    background-image: url('../images/cleaner.png') !important;
+    background-size: contain !important;
+    background-position: top 7px right 0px;
 }

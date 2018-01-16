@@ -7,6 +7,7 @@
     <title>Document</title>
     <link href="https://fonts.googleapis.com/css?family=Hind:400,600,700" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/css/fontello.css">
 </head>
 <body>
     <main>
@@ -15,7 +16,7 @@
         <div class="container" style="max-width:1140px">
             <div class="introduction">
                 <div class="magnifier-box">
-                    <img src="images/magnifier.png" alt="Magnifier with bugs" width="950px" height="800px">
+                    <img src="images/magnifier.png" alt="Magnifier with bugs" width="950px" height="800px" class="magnifier">
                 </div>
                 <div class="main-logo">
                     <a href="/">
@@ -26,26 +27,39 @@
                     <div class="main-nav">
                         <ul>
                             <li class="nav-start"><a href="game.html">start</a></li>
-                            <li class="nav-cont"><a href="">continue</a></li>
-                            <li class="nav-rules"><a href="">game rules</a></li>
-                            <li class="nav-score"><a href="">high score</a></li>
-                            <li class="nav-set"><a href="">setting</a></li>
+                            <li class="nav-rules"><span class="show-rules">game rules</span></li>
                         </ul>
                     </div>
                 </nav>
+                <section>
+                    <div class="game-rules">
+                        <div class="additional-btn">
+                            <div class="cancel btn">
+                                <i class="icon-cancel"></i>
+                            </div>
+                        </div>
+                        <span class="title">catch as many bugs as possible !!!</span>
+                        you need to match bug's color to others, but only vertically and horizontally.<br>
+                        attention : after maching, the worms above don't fall down.<br>
+                        you can change speed of game by marking the stars at the beginning of the game and each time you stop the game.<br>
+                        you can use helpers, but you must have the right quantity of points:
+                        <ul>
+                            <li><img src="images/cleaner.png" alt="cleaner helper" width="50px" height="41px"> x 100 points - removes the row of worms</li>
+                            <li><img src="images/sprey.png" alt="sprey helper" width="31px" height="50px"> x 150 points - removes all worms for particular color</li>
+                            <li><img src="images/boom.png" alt="boom helper" width="45px" height="45px"> x 100 points - removes 3x3 square of worms</li>
+                        </ul>
+                    </div>
+                </section>
             </div>
-
         </div>
-
-
-
-
 </body>
+<script>
+const rules = document.querySelector(".game-rules");
+document.querySelector(".show-rules").addEventListener("click", (e)=>{
+    rules.classList.add("active");
+});
+document.querySelector(".cancel").addEventListener("click", (e)=>{
+    rules.classList.remove("active");
+});
+</script>
 </html>
-
-
-<!-- let bugField = this.position(this.bug.x, this.bug.y);
-let dataClass = this.board[bugField].dataset.class;
-dataClass = this.bug.color;
-this.board[bugField].classList.add(dataClass);
-console.log(this.bug.x, this.bug.y, dataClass); -->
