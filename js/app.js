@@ -207,125 +207,91 @@ class Game {
 
 	checkCloseFields(){
 		//left brothers
-		let leftElem = self.position(self.bug.x - 1, self.bug.y);
-		let upLeftElem = self.position(self.bug.x - 1, self.bug.y - 1);
-		let downLeftElem = self.position(self.bug.x - 1, self.bug.y + 1);
-		let leftElemBro = self.position(self.bug.x - 2, self.bug.y);
+		let leftPosition = self.position(self.bug.x - 1, self.bug.y);
+		let upLeftPosition = self.position(self.bug.x - 1, self.bug.y - 1);
+		let downLeftPosition = self.position(self.bug.x - 1, self.bug.y + 1);
+		let leftPositionBro = self.position(self.bug.x - 2, self.bug.y);
 		//right brothers
-		let rightElem = self.position(self.bug.x + 1, self.bug.y);
-		let upRightElem = self.position(self.bug.x + 1, self.bug.y - 1);
-		let downRightElem = self.position(self.bug.x + 1, self.bug.y + 1);
-		let rightElemBro = self.position(self.bug.x + 2, self.bug.y);
+		let rightPosition = self.position(self.bug.x + 1, self.bug.y);
+		let upRightPosition = self.position(self.bug.x + 1, self.bug.y - 1);
+		let downRightPosition = self.position(self.bug.x + 1, self.bug.y + 1);
+		let rightPositionBro = self.position(self.bug.x + 2, self.bug.y);
 		//down brothers
-		let downElem = self.position(self.bug.x, self.bug.y + 1);
-		let downElemBro = self.position(self.bug.x, self.bug.y + 2);
+		let downPosition = self.position(self.bug.x, self.bug.y + 1);
+		let downPositionBro = self.position(self.bug.x, self.bug.y + 2);
 
-		let case0 = [rightElem];
-		let case7 = [leftElem];
-		let case1 = [rightElem, leftElem];
-		let case6 = [rightElem, leftElem];
-		let def = [rightElem, leftElem];
+		let case0 = [rightPosition];
+		let case1 = [rightPosition, leftPosition];
+		let case6 = [rightPosition, leftPosition];
+		let case7 = [leftPosition];
+		let def = [rightPosition, leftPosition];
 
-		function tamp6(caseNum, leftBro, rightBro){
-			let booleanOneR = self.elementHasColor(rightElem);
-			let booleanOneL = self.elementHasColor(leftElem);
-
-			if(booleanOneR && booleanOneL){
-				caseNum.push(upRightElem, upLeftElem, leftBro, rightBro);
-				self.cleanFields(caseNum);
-			} else if(booleanOneL){
-				caseNum.push(upLeftElem, leftBro);
-				self.cleanFields(caseNum);
-			} else if(booleanOneR){
-				caseNum.push(upRightElem, rightBro);
-				self.cleanFields(caseNum);
-			}
-		}
-
-		function temp5(caseNum, leftBro, rightBro){
-			let booleanOneR = self.elementHasColor(rightElem);
-			let booleanOneL = self.elementHasColor(leftElem);
-			let booleanOneD = self.elementHasColor(downElem);
-
-			if(booleanOneR && booleanOneL && booleanOneD){
-				caseNum.push(upRightElem, upLeftElem, downElem, leftBro, rightBro);
-				self.cleanFields(caseNum);
-			} else if(booleanOneR && booleanOneL){
-				caseNum.push(upRightElem, upLeftElem, downLeftElem, downRightElem, leftBro, rightBro);
-				self.cleanFields(caseNum);
-			} else if(booleanOneL && booleanOneD){
-				caseNum.push(downElem, upLeftElem, downRightElem, downLeftElem, leftBro, rightBro);
-				self.cleanFields(caseNum);
-			} else if(booleanOneR && booleanOneD){
-				caseNum.push(downElem, upRightElem, downLeftElem, downRightElem, leftBro, rightBro);
-				self.cleanFields(caseNum);
-			} else if(booleanOneL){
-				caseNum.push(upLeftElem, downLeftElem, leftBro);
-				self.cleanFields(caseNum);
-			} else if(booleanOneR){
-				caseNum.push(upRightElem, downRightElem, rightBro);
-				self.cleanFields(caseNum);
-			} else if(booleanOneD){
-				caseNum.push(downElem, downLeftElem, downRightElem);
-				self.cleanFields(caseNum);
-			}
-		}
-
-
-		function tempDef(caseNum, leftBro, rightBro, downBro){
-			let booleanOneR = self.elementHasColor(rightElem);
-			let booleanOneL = self.elementHasColor(leftElem);
-			let booleanOneD = self.elementHasColor(downElem);
-
-			if(booleanOneR && booleanOneL && booleanOneD){
-				caseNum.push(upRightElem, upLeftElem, downElem, leftBro, rightBro, downBro);
-				self.cleanFields(caseNum);
-			} else if(booleanOneR && booleanOneL){
-				caseNum.push(upRightElem, upLeftElem, downLeftElem, downRightElem, leftBro, rightBro);
-				self.cleanFields(caseNum);
-			} else if(booleanOneL && booleanOneD){
-				caseNum.push(downElem, upLeftElem, downRightElem, downLeftElem, leftBro, downBro);
-				self.cleanFields(caseNum);
-			} else if(booleanOneR && booleanOneD){
-				caseNum.push(downElem, upRightElem, downLeftElem, downRightElem, rightBro, );
-				self.cleanFields(caseNum);
-			} else if(booleanOneL){
-				caseNum.push(upLeftElem, downLeftElem, leftBro);
-				self.cleanFields(caseNum);
-			} else if(booleanOneR){
-				caseNum.push(upRightElem, downRightElem, rightBro);
-				self.cleanFields(caseNum);
-			} else if(booleanOneD){
-				caseNum.push(downElem, downLeftElem, downRightElem, downBro);
-				self.cleanFields(caseNum);
-			}
-		}
 
 		switch(this.bug.y){
 			case 6:
 				switch(this.bug.x){
 					case 0:
-						let booleanZero = self.elementHasColor(rightElem);
+						let booleanZero = self.elementHasColor(rightPosition);
 						if(booleanZero){
-							case0.push(rightElemBro, upRightElem);
+							case0.push(rightPositionBro, upRightPosition);
 							self.cleanFields(case0);
 						}
 						break;
+
 					case 1:
-						tamp6(case1, null, rightElemBro);
+						let booleanOneR = self.elementHasColor(rightPosition);
+						let booleanOneL = self.elementHasColor(leftPosition);
+
+						if(booleanOneR && booleanOneL){
+							case1.push(rightPositionBro, upRightPosition, upLeftPosition);
+							self.cleanFields(case1);
+						} else if(booleanOneL){
+							case1.push(upLeftPosition);
+							self.cleanFields(case1);
+						} else if(booleanOneR){
+							case1.push(rightPositionBro, upRightPosition);
+							self.cleanFields(case1);
+						}
 						break;
+
 					case 6:
-						tamp6(case6, leftElemBro);
+						let booleanSixR = self.elementHasColor(rightPosition);
+						let booleanSixL = self.elementHasColor(leftPosition);
+
+						if(booleanSixR && booleanSixL){
+							case6.push(leftPositionBro, upRightPosition, upLeftPosition);
+							self.cleanFields(case6);
+						} else if(booleanSixL){
+							case6.push(upLeftPosition, leftPositionBro);
+							self.cleanFields(case6);
+						} else if(booleanSixR){
+							case6.push(upRightPosition);
+							self.cleanFields(case6);
+						}
 						break;
+
 					case 7:
-						let booleanSeven = self.elementHasColor(leftElem);
+						let booleanSeven = self.elementHasColor(leftPosition);
 						if(booleanSeven){
-							case7.push(leftElemBro, upLeftElem);
+							case7.push(leftPositionBro, upLeftPosition);
 							self.cleanFields(case7);
 						}
 						break;
+
 					default:
-						tamp6(def, leftElemBro, rightElemBro);
+						let booleanDefR = self.elementHasColor(rightPosition);
+						let booleanDefL = self.elementHasColor(leftPosition);
+
+						if(booleanDefR && booleanDefL){
+							def.push(leftPositionBro, rightPositionBro, upRightPosition, upLeftPosition);
+							self.cleanFields(def);
+						} else if(booleanDefL){
+							def.push(leftPositionBro, upLeftPosition);
+							self.cleanFields(def);
+						} else if(booleanDefR){
+							def.push(rightPositionBro, upRightPosition);
+							self.cleanFields(def);
+						}
 						break;
 				}
 			break;
@@ -333,94 +299,246 @@ class Game {
 			case 5:
 				switch(this.bug.x){
 					case 0:
-						let booleanZeroR = self.elementHasColor(rightElem);
-						let booleanZeroD = self.elementHasColor(downElem);
+						let booleanZeroR = self.elementHasColor(rightPosition);
+						let booleanZeroD = self.elementHasColor(downPosition);
 						if(booleanZeroR && booleanZeroD){
-							case0.push(rightElemBro, upRightElem, downRightElem, downLeftElem, downElem);
+							case0.push(rightPositionBro, upRightPosition, downRightPosition, downLeftPosition, downPosition);
 							self.cleanFields(case0);
 						} else if(booleanZeroR){
-							case0.push(rightElemBro, upRightElem, downRightElem);
+							case0.push(rightPositionBro, upRightPosition, downRightPosition);
 							self.cleanFields(case0);
 						} else if(booleanZeroD) {
-							case0.push(downElem, downRightElem);
+							case0.push(downPosition, downRightPosition);
 							self.cleanFields(case0);
 						}
-						break;
+					break;
 
 					case 1:
-						temp5(case1, null, rightElemBro);
-						break;
+						let booleanOneR = self.elementHasColor(rightPosition);
+						let booleanOneL = self.elementHasColor(leftPosition);
+						let booleanOneD = self.elementHasColor(downPosition);
+
+						if(booleanOneR && booleanOneL && booleanOneD){
+							case1.push(rightPositionBro, upRightPosition, upLeftPosition, downPosition);
+							self.cleanFields(case1);
+						} else if(booleanOneR && booleanOneL){
+							case1.push(rightPositionBro, upRightPosition, upLeftPosition, downLeftPosition, downRightPosition);
+							self.cleanFields(case1);
+						} else if(booleanOneL){
+							case1.push(upLeftPosition, downLeftPosition);
+							self.cleanFields(case1);
+						} else if(booleanOneL && booleanOneD){
+							case1.push(downPosition, upLeftPosition, downRightPosition, downLeftPosition);
+							self.cleanFields(case1);
+						} else if(booleanOneR && booleanOneD){
+							case1.push(downPosition, upRightPosition, rightPositionBro, downLeftPosition, downRightPosition);
+							self.cleanFields(case1);
+						} else if(booleanOneR){
+							case1.push(rightPositionBro, upRightPosition, downRightPosition);
+							self.cleanFields(case1);
+						} else if(booleanOneD){
+							case1.push(downPosition, downLeftPosition, downRightPosition);
+							self.cleanFields(case1);
+						}
+					break;
 
 					case 6:
-						temp5(case6, leftElemBro, null);
-						break;
+						let booleanSixR = self.elementHasColor(rightPosition);
+						let booleanSixL = self.elementHasColor(leftPosition);
+						let booleanSixD = self.elementHasColor(downPosition);
+
+						if(booleanSixR && booleanSixL && booleanSixD){
+							case6.push(leftPositionBro, upRightPosition, upLeftPosition, downPosition);
+							self.cleanFields(case6);
+						} else if(booleanSixR && booleanSixL){
+							case6.push(leftPositionBro, upRightPosition, upLeftPosition, downLeftPosition, downRightPosition);
+							self.cleanFields(case6);
+						} else if(booleanSixL && booleanSixD){
+							case6.push(downPosition, upLeftPosition, downRightPosition, downLeftPosition, leftPositionBro);
+							self.cleanFields(case6);
+						} else if(booleanSixR && booleanSixD){
+							case6.push(downPosition, upRightPosition, downLeftPosition, downRightPosition);
+							self.cleanFields(case6);
+						} else if(booleanSixL){
+							case6.push(upLeftPosition, downLeftPosition, leftPositionBro);
+							self.cleanFields(case6);
+						} else if(booleanSixR){
+							case6.push(upRightPosition, downRightPosition);
+							self.cleanFields(case6);
+						} else if(booleanSixD){
+							case6.push(downPosition, downLeftPosition, downRightPosition);
+							self.cleanFields(case6);
+						}
+					break;
 
 					case 7:
-						let booleanSevenL = self.elementHasColor(leftElem);
-						let booleanSevenD = self.elementHasColor(downElem);
+						let booleanSevenL = self.elementHasColor(leftPosition);
+						let booleanSevenD = self.elementHasColor(downPosition);
 						if(booleanSevenL && booleanSevenD){
-							case7.push(leftElemBro, upLeftElem, downLeftElem, downElem);
+							case7.push(leftPositionBro, upLeftPosition, downLeftPosition, downRightPosition, downPosition);
 							self.cleanFields(case7);
 						} else if(booleanSevenL){
-							case7.push(leftElemBro, upLeftElem, downLeftElem);
+							case7.push(leftPositionBro, upLeftPosition, downLeftPosition);
 							self.cleanFields(case7);
 						} else if(booleanSevenD) {
-							case7.push(downElem, downLeftElem);
+							case7.push(downPosition, downLeftPosition);
 							self.cleanFields(case7);
 						}
-							break;
+					break;
 
 					default:
-						temp5(def, leftElemBro, rightElemBro);
-						break;
+						let booleanDefR = self.elementHasColor(rightPosition);
+						let booleanDefL = self.elementHasColor(leftPosition);
+						let booleanDefD = self.elementHasColor(downPosition);
+
+						if(booleanDefR && booleanDefL && booleanDefD){
+							def.push(leftPositionBro, rightPositionBro, upRightPosition, upLeftPosition, downPosition);
+							self.cleanFields(def);
+						} else if(booleanDefR && booleanDefL){
+							def.push(leftPositionBro, rightPositionBro, upRightPosition, upLeftPosition, downLeftPosition, downRightPosition);
+							self.cleanFields(def);
+						} else if(booleanDefL && booleanDefD){
+							def.push(downPosition, upLeftPosition, downRightPosition, downLeftPosition, leftPositionBro);
+							self.cleanFields(def);
+						} else if(booleanDefR && booleanDefD){
+							def.push(downPosition, upRightPosition, downLeftPosition, downRightPosition, rightPositionBro);
+							self.cleanFields(def);
+						} else if(booleanDefL){
+							def.push(upLeftPosition, downLeftPosition, leftPositionBro);
+							self.cleanFields(def);
+						} else if(booleanDefR){
+							def.push(upRightPosition, rightPositionBro,  downRightPosition);
+							self.cleanFields(def);
+						} else if(booleanDefD){
+							def.push(downPosition, downLeftPosition, downRightPosition);
+							self.cleanFields(def);
+						}
+					break;
 				}
 			break;
 
 			default:
 			switch(this.bug.x){
 				case 0:
-					let booleanZeroR = self.elementHasColor(rightElem);
-					let booleanZeroD = self.elementHasColor(downElem);
+					let booleanZeroR = self.elementHasColor(rightPosition);
+					let booleanZeroD = self.elementHasColor(downPosition);
 					if(booleanZeroR && booleanZeroD){
-						case0.push(rightElemBro, upRightElem, downRightElem, downLeftElem, downElem, downElemBro);
+						case0.push(rightPositionBro, upRightPosition, downRightPosition, downLeftPosition, downPosition, downPositionBro);
 						self.cleanFields(case0);
 					} else if(booleanZeroR){
-						case0.push(rightElemBro, upRightElem, downRightElem);
+						case0.push(rightPositionBro, upRightPosition, downRightPosition);
 						self.cleanFields(case0);
 					} else if(booleanZeroD) {
-						case0.push(downElem, downRightElem, downElemBro);
+						case0.push(downPosition, downRightPosition, downPositionBro);
 						self.cleanFields(case0);
 					}
-					break;
+				break;
 
 				case 1:
-					tempDef(case1, null, rightElemBro, downElemBro);
-					break;
+					let booleanOneR = self.elementHasColor(rightPosition);
+					let booleanOneL = self.elementHasColor(leftPosition);
+					let booleanOneD = self.elementHasColor(downPosition);
+
+					if(booleanOneR && booleanOneL && booleanOneD){
+						case1.push(rightPositionBro, upRightPosition, upLeftPosition, downPosition, downPositionBro);
+						self.cleanFields(case1);
+					} else if(booleanOneR && booleanOneL){
+						case1.push(rightPositionBro, upRightPosition, upLeftPosition, downLeftPosition, downRightPosition);
+						self.cleanFields(case1);
+					} else if(booleanOneL && booleanOneD){
+						case1.push(downPosition, upLeftPosition, downRightPosition, downLeftPosition, downPositionBro);
+						self.cleanFields(case1);
+					} else if(booleanOneR && booleanOneD){
+					   case1.push(downPosition, upRightPosition, rightPositionBro, downLeftPosition, downRightPosition, downPositionBro);
+					   self.cleanFields(case1);
+					} else if(booleanOneL){
+						case1.push(upLeftPosition, downLeftPosition);
+						self.cleanFields(case1);
+					} else if(booleanOneR){
+						case1.push(rightPositionBro, upRightPosition, downRightPosition);
+						self.cleanFields(case1);
+					} else if(booleanOneD){
+						case1.push(downPosition, downLeftPosition, downRightPosition, downPositionBro);
+						self.cleanFields(case1);
+					}
+				break;
+
 				case 6:
-					tempDef(case6, leftElemBro, null, downElemBro);
-					break;
+					let booleanSixR = self.elementHasColor(rightPosition);
+					let booleanSixL = self.elementHasColor(leftPosition);
+					let booleanSixD = self.elementHasColor(downPosition);
+
+					if(booleanSixR && booleanSixL && booleanSixD){
+						case6.push(leftPositionBro, upRightPosition, upLeftPosition, downPosition, downPositionBro);
+						self.cleanFields(case6);
+					} else if(booleanSixR && booleanSixL){
+						case6.push(leftPositionBro, upRightPosition, upLeftPosition, downLeftPosition, downRightPosition);
+						self.cleanFields(case6);
+					} else if(booleanSixL && booleanSixD){
+						case6.push(downPosition, upLeftPosition, downRightPosition, downLeftPosition, leftPositionBro, downPositionBro);
+						self.cleanFields(case6);
+					} else if(booleanSixR && booleanSixD){
+						case6.push(downPosition, upRightPosition, downLeftPosition, downRightPosition, downPositionBro);
+						self.cleanFields(case6);
+					} else if(booleanSixL){
+						case6.push(upLeftPosition, downLeftPosition, leftPositionBro);
+						self.cleanFields(case6);
+					} else if(booleanSixR){
+						case6.push(upRightPosition, downRightPosition);
+						self.cleanFields(case6);
+					} else if(booleanSixD){
+						case6.push(downPosition, downLeftPosition, downRightPosition, downPositionBro);
+						self.cleanFields(case6);
+					}
+				break;
 
 				case 7:
-					let booleanSevenL = self.elementHasColor(leftElem);
-					let booleanSevenD = self.elementHasColor(downElem);
+					let booleanSevenL = self.elementHasColor(leftPosition);
+					let booleanSevenD = self.elementHasColor(downPosition);
 					if(booleanSevenL && booleanSevenD){
-						case7.push(leftElemBro, upLeftElem, downLeftElem, downRightElem, downElem, downElemBro);
+						case7.push(leftPositionBro, upLeftPosition, downLeftPosition, downRightPosition, downPosition, downPositionBro);
 						self.cleanFields(case7);
 					} else if(booleanSevenL){
-						case7.push(leftElemBro, upLeftElem, downLeftElem);
+						case7.push(leftPositionBro, upLeftPosition, downLeftPosition);
 						self.cleanFields(case7);
 					} else if(booleanSevenD) {
-						case7.push(downElem, downLeftElem, downElemBro);
+						case7.push(downPosition, downLeftPosition, downPositionBro);
 						self.cleanFields(case7);
 					}
 				break;
 
 				default:
-					tempDef(def, leftElemBro, rightElemBro, downElemBro);
-					break;
+					let booleanDefR = self.elementHasColor(rightPosition);
+					let booleanDefL = self.elementHasColor(leftPosition);
+					let booleanDefD = self.elementHasColor(downPosition);
+
+					if(booleanDefR && booleanDefL && booleanDefD){
+						def.push(leftPositionBro, rightPositionBro, upRightPosition, upLeftPosition, downPosition, downPositionBro);
+						self.cleanFields(def);
+					} else if(booleanDefR && booleanDefL){
+						def.push(leftPositionBro, rightPositionBro, upRightPosition, upLeftPosition, downLeftPosition, downRightPosition);
+						self.cleanFields(def);
+					} else if(booleanDefL && booleanDefD){
+						def.push(downPosition, upLeftPosition, downRightPosition, downLeftPosition, leftPositionBro, downPositionBro);
+						self.cleanFields(def);
+					} else if(booleanDefR && booleanDefD){
+						def.push(downPosition, upRightPosition, downLeftPosition, downRightPosition, rightPositionBro, downPositionBro);
+						self.cleanFields(def);
+					} else if(booleanDefL){
+						def.push(upLeftPosition, downLeftPosition, leftPositionBro);
+						self.cleanFields(def);
+					} else if(booleanDefR){
+						def.push(upRightPosition, rightPositionBro,  downRightPosition);
+						self.cleanFields(def);
+					} else if(booleanDefD){
+						def.push(downPosition, downLeftPosition, downRightPosition, downPositionBro);
+						self.cleanFields(def);
+					}
+				break;
 			}
 			break;
 		}
+
 	}
 
 	clean(el) {
