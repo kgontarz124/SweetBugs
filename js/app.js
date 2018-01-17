@@ -559,7 +559,7 @@ class Game {
 document.addEventListener("DOMContentLoaded", function(event) {
     "use strict";
 	//speed of speed
-	let speed = 600;
+	let speed = 400;
 	let sound = true;
 	function changespeed(event){
 		if (this.getAttribute("src") === "images/star.svg") {
