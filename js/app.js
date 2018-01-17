@@ -253,14 +253,14 @@ class Game {
 			} else if(booleanOneR && booleanOneL){
 				caseNum.push(upRightElem, upLeftElem, downLeftElem, downRightElem, leftBro, rightBro);
 				self.cleanFields(caseNum);
-			} else if(booleanOneL){
-				caseNum.push(upLeftElem, downLeftElem, leftBro);
-				self.cleanFields(caseNum);
 			} else if(booleanOneL && booleanOneD){
 				caseNum.push(downElem, upLeftElem, downRightElem, downLeftElem, leftBro, rightBro);
 				self.cleanFields(caseNum);
 			} else if(booleanOneR && booleanOneD){
 				caseNum.push(downElem, upRightElem, downLeftElem, downRightElem, leftBro, rightBro);
+				self.cleanFields(caseNum);
+			} else if(booleanOneL){
+				caseNum.push(upLeftElem, downLeftElem, leftBro);
 				self.cleanFields(caseNum);
 			} else if(booleanOneR){
 				caseNum.push(upRightElem, downRightElem, rightBro);
@@ -283,14 +283,14 @@ class Game {
 			} else if(booleanOneR && booleanOneL){
 				caseNum.push(upRightElem, upLeftElem, downLeftElem, downRightElem, leftBro, rightBro);
 				self.cleanFields(caseNum);
-			} else if(booleanOneL){
-				caseNum.push(upLeftElem, downLeftElem, leftBro);
-				self.cleanFields(caseNum);
 			} else if(booleanOneL && booleanOneD){
 				caseNum.push(downElem, upLeftElem, downRightElem, downLeftElem, leftBro, downBro);
 				self.cleanFields(caseNum);
 			} else if(booleanOneR && booleanOneD){
 				caseNum.push(downElem, upRightElem, downLeftElem, downRightElem, rightBro, );
+				self.cleanFields(caseNum);
+			} else if(booleanOneL){
+				caseNum.push(upLeftElem, downLeftElem, leftBro);
 				self.cleanFields(caseNum);
 			} else if(booleanOneR){
 				caseNum.push(upRightElem, downRightElem, rightBro);
