@@ -47,6 +47,7 @@ class Game {
 		document.querySelector(".volume").addEventListener("click", (e)=>{
 			self.soundTurnOn=!self.soundTurnOn;
 		})
+
 	}
 
 	countGameTime() {
@@ -107,6 +108,8 @@ class Game {
 				soundBox.innerHTML =`<audio autoplay><source src="fail-sound.mp3"/>
 				<source src="fail-sound.mp3"/></audio>`;
 			}
+
+			console.log(self.timers);
 			clearInterval(self.handler);
 			document.querySelector(".result-of-game").innerText = self.generalResult;
 			document.querySelector(".time-of-game").innerText = document.querySelector(".time").innerText
@@ -702,9 +705,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		sound=!sound;
 	})
 
+
 	//start game
 	document.querySelector(".play").addEventListener("click", (e)=>{
-		if(document.querySelector(".time").innerText === "00.00"){
+		if(self.timer === undefined){
 			let game = new Game(speed, sound);
 		} else if(self.playTurnOn === false){
 			self.speed = speed;
