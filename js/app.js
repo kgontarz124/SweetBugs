@@ -101,6 +101,8 @@ class Game {
 
     check() {
 		let downPosition = self.position(self.bug.x, self.bug.y + 1);
+		let leftPosition = self.position(self.bug.x - 1, self.bug.y);
+		let rightPosition = self.position(self.bug.x + 1, self.bug.y);
 		//gemeover
 		if(self.bug.y === 0 && downPosition.dataset.occupied === "true"){
 			if(self.soundTurnOn){
@@ -108,8 +110,6 @@ class Game {
 				soundBox.innerHTML =`<audio autoplay><source src="fail-sound.mp3"/>
 				<source src="fail-sound.mp3"/></audio>`;
 			}
-
-			console.log(self.timers);
 			clearInterval(self.handler);
 			document.querySelector(".result-of-game").innerText = self.generalResult;
 			document.querySelector(".time-of-game").innerText = document.querySelector(".time").innerText
@@ -119,6 +119,7 @@ class Game {
 			clearInterval(self.timer);
 			document.querySelector(".time").innerText = "00.00";
 			document.querySelector(".general").innerText = "0";
+			delete self.timer;
 
 			let tabPropColor = [self.purple, self.pink, self.green, self.red,  self.orange];
 
@@ -138,17 +139,13 @@ class Game {
 			    }
 			})
 		}
-    // checking borders - left and right
-        if (this.bug.x <=0 && this.bug.direction === "right") {
-            this.bug.direction = "right";
-        } else if (this.bug.x <=0 ) {
-                this.bug.direction = "down";
-        }
-        if (this.bug.x >=7 && this.bug.direction === "left") {
-            this.bug.direction = "left";
-        } else if (this.bug.x >=7 ) {
-                this.bug.direction = "down";
-        }
+    // checking borders and occupied fields - left and right
+		if((this.bug.x >0 && leftPosition.dataset.occupied === "true") ||
+		(this.bug.x <7 && rightPosition.dataset.occupied === "true") ||
+		(this.bug.x >=7 && this.bug.direction === "right") ||
+		(this.bug.x <=0 && this.bug.direction === "left")) {
+			this.bug.direction = "down";
+		}
     }
 
     position(x, y) {
