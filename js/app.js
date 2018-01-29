@@ -32,6 +32,7 @@ class Game {
 		this.minutesUnity = 0;
 		this.secondsDozens = 0;
 		this.secondsUnity = 0;
+		this.canChangeDirection = true;
 
 
         self = this;
@@ -46,8 +47,7 @@ class Game {
 		});
 		document.querySelector(".volume").addEventListener("click", (e)=>{
 			self.soundTurnOn=!self.soundTurnOn;
-		})
-
+		});
 	}
 
 	countGameTime() {
@@ -79,10 +79,16 @@ class Game {
         var key = event.which;
         switch (key) {
             case 37:
-                self.bug.direction = "left";
+				if(self.canChangeDirection){
+	            	self.bug.direction = "left";
+					self.canChangeDirection = false;
+				}
                 break;
             case 39:
-                self.bug.direction = "right";
+				if(self.canChangeDirection){
+	            	self.bug.direction = "right";
+					self.canChangeDirection = false;
+				}
                 break;
             case 40:
                 self.bug.direction = "down";
@@ -556,6 +562,7 @@ class Game {
 					self.bug.y++;
 					let upElem = self.position(self.bug.x, self.bug.y - 1);
 					self.clean(upElem);
+					self.canChangeDirection = true;
 					break;
 				case "left":
 					self.bug.x--;
@@ -595,12 +602,9 @@ class Game {
 		let cleanFromBoom = (leng)=>{
 			for(let i = self.bug.x-1; i < self.bug.x+2; i++){
 				for(let j = self.bug.y+1; j < self.bug.y+leng; j++){
-					console.log(self.position(i, j));
 					self.position(i, j).dataset.occupied = "false";
 					let tab = self.position(i, j).classList;
 					tab.remove(tab[1]);
-					console.log("nowe: ");
-					console.log(self.position(i, j));
 				}
 			}
 		}
@@ -632,7 +636,6 @@ class Game {
 			case "cleaner":
 				self.clean(position);
 				for(let i = 0; i < 8; i++){
-					// console.log(self.position(i, self.bug.y + 1));
 					let tab = self.position(i, self.bug.y + 1).classList;
 					tab.remove(tab[1]);
 					self.position(i, self.bug.y + 1).dataset.occupied = "false";
